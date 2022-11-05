@@ -18,11 +18,13 @@
     "preview": "qwik build preview && vite preview --open",
     "serve": "echo 'Run \"npm run qwik add\" to install a server adaptor'",
     "start": "vite --open --mode ssr",
-    "qwik": "qwik"
+    "qwik": "qwik",
+    "test": "jest"
   },
   "devDependencies": {
     "@builder.io/qwik": "0.12.1",
     "@builder.io/qwik-city": "0.0.118",
+    "@faker-js/faker": "^7.6.0",
     "@types/eslint": "8.4.8",
     "@types/node": "latest",
     "@typescript-eslint/eslint-plugin": "5.41.0",

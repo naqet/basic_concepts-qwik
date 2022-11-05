@@ -1,17 +1,44 @@
-import { component$, useStyles$ } from '@builder.io/qwik';
-import { QwikCity, RouterOutlet, ServiceWorkerRegister } from '@builder.io/qwik-city';
-import { RouterHead } from './components/router-head/router-head';
+import {
+  component$,
+  createContext,
+  useContextProvider,
+  useStore,
+  useStyles$,
+} from "@builder.io/qwik";
+import {
+  QwikCity,
+  RouterOutlet,
+  ServiceWorkerRegister,
+} from "@builder.io/qwik-city";
+import { faker } from "@faker-js/faker";
+import { RouterHead } from "./components/RouterHead";
 
-import globalStyles from './global.css?inline';
+import globalStyles from "./global.css?inline";
+export interface Item {
+  id: number;
+  title: string;
+  description: string;
+  imgUrl: string;
+}
+
+export interface ShopState {
+  availableItems: readonly Item[];
+  cart: number[];
+}
+
+export const ShopContext = createContext<ShopState>("shop-context");
 
 export default component$(() => {
-  /**
-   * The root of a QwikCity site always start with the <QwikCity> component,
-   * immediately followed by the document's <head> and <body>.
-   *
-   * Dont remove the `<head>` and `<body>` elements.
-   */
   useStyles$(globalStyles);
+  const availableItems = Array.from({ length: 5 }, () => ({
+    id: faker.datatype.number(),
+    title: faker.commerce.product(),
+    description: faker.commerce.productDescription(),
+    price: faker.datatype.number({ min: 1, max: 100 }),
+    imgUrl: faker.image.business(250, 180),
+  }));
+  const store = useStore<ShopState>({ availableItems, cart: [] });
+  useContextProvider(ShopContext, store);
 
   return (
     <QwikCity>
